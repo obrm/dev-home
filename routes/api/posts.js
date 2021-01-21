@@ -186,8 +186,7 @@ router.post(
 // @access      Private
 router.put('/comment/:id/:comment_id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    const post = await Post.findById(req.params.id);
+    let post = await Post.findById(req.params.id);
 
     // Pull out comment
     let comment = post.comments.find(
@@ -202,21 +201,20 @@ router.put('/comment/:id/:comment_id', auth, async (req, res) => {
       return res.status(401).json({ msg: 'אין הרשאה.' });
 
     const editedComment = {
-      text: req.body.text,
-      name: user.name,
-      avatar: user.avatar,
-      user: req.user.id,
-      date: new Date(),
+      'comments.$.text': req.body.text,
+      'comments.$.editedAt': new Date(),
     };
 
-    // Get update index
-    const updateIndex = post.comments
-      .map(comment => comment.user.toString())
-      .indexOf(req.user.id);
-
-    post.comments[updateIndex] = editedComment;
-
-    await post.save();
+    post = await Post.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        'comments._id': req.params.comment_id,
+      },
+      {
+        $set: editedComment,
+      },
+      { new: true }
+    );
 
     res.json(post.comments);
   } catch (err) {
