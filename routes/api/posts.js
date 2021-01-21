@@ -69,6 +69,39 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route       PUT api/posts/:id/
+// @desc        Edit a post
+// @access      Private
+router.put('/:id', auth, async (req, res) => {
+  try {
+    let post = await Post.findById(req.params.id);
+
+    // Make sure if the user editing the comment is the owner of the comment
+    if (post.user.toString() !== req.user.id)
+      return res.status(401).json({ msg: 'אין הרשאה.' });
+
+    const editedPost = {
+      text: req.body.text,
+      editedAt: new Date(),
+    };
+
+    post = await Post.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      {
+        $set: editedPost,
+      },
+      { new: true }
+    );
+
+    res.json(post);
+  } catch (err) {
+    console.error('💥 ' + err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route       DELETE api/posts/:id
 // @desc        Delete a post
 // @access      Private

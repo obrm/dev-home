@@ -53,6 +53,9 @@ const PostSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  editedAt: {
+    type: Date,
+  },
 });
 
 module.exports = Post = mongoose.model('post', PostSchema);
