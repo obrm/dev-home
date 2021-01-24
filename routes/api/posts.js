@@ -222,7 +222,7 @@ router.put('/comment/:id/:comment_id', auth, async (req, res) => {
     let post = await Post.findById(req.params.id);
 
     // Pull out comment
-    let comment = post.comments.find(
+    const comment = post.comments.find(
       comment => comment.id === req.params.comment_id
     );
 
