@@ -227,11 +227,11 @@ router.put('/comment/:id/:comment_id', auth, async (req, res) => {
     );
 
     // Make sure comment exists
-    if (!comment) return res.status(404).json({ msg: 'התגובה לא נמצאה.' });
+    if (!comment) return res.status(404).json({ msg: 'התגובה לא נמצאה' });
 
     // Make sure if the user editing the comment is the owner of the comment
     if (comment.user.toString() !== req.user.id)
-      return res.status(401).json({ msg: 'אין הרשאה.' });
+      return res.status(401).json({ msg: 'אין הרשאה' });
 
     const editedComment = {
       'comments.$.text': req.body.text,
@@ -269,11 +269,11 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     );
 
     // Make sure comment exists
-    if (!comment) return res.status(404).json({ msg: 'התגובה לא נמצאה.' });
+    if (!comment) return res.status(404).json({ msg: 'התגובה לא נמצאה' });
 
     // Make sure if the user deleting the comment is the owner of the comment
     if (comment.user.toString() !== req.user.id)
-      return res.status(401).json({ msg: 'אין הרשאה.' });
+      return res.status(401).json({ msg: 'אין הרשאה' });
 
     // Get remove index
     const removeIndex = post.comments

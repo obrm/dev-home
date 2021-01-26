@@ -14,11 +14,12 @@ const User = require('../../models/User');
 // @access      Public
 router.post(
   '/',
-  body('name', 'שם הינו שדה חובה.').not().isEmpty(),
-  body('email', `נא להזין כתובת דואר אלקטרוני תקנית.`).isEmail(),
+  body('name', 'שם הינו שדה חובה').not().isEmpty(),
+  body('email', `נא להזין כתובת דואר אלקטרוני תקנית`).isEmail(),
+  body('gender', `מגדר הינו שדה חובה`).not().isEmpty(),
   body(
     'password',
-    'נא להזין סיסמה עם 6 או יותר תווים, לפחות אות קטנה אחת, אות גדולה אחת, מספר אחד ותו מיוחד.'
+    'נא להזין סיסמה עם 6 או יותר תווים, לפחות אות קטנה אחת, אות גדולה אחת, מספר אחד ותו מיוחד'
   ).matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
     'i'
@@ -29,13 +30,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, gender } = req.body;
 
     try {
       let user = await User.findOne({ email });
 
       if (user) {
-        return res.status(400).json({ errors: [{ msg: 'המשתמש קיים.' }] });
+        return res.status(400).json({ errors: [{ msg: 'המשתמש קיים' }] });
       }
 
       const avatar = gravatar.url(email, {
@@ -49,6 +50,7 @@ router.post(
         email,
         avatar,
         password,
+        gender,
       });
 
       const salt = await bcrypt.genSalt(10);

@@ -18,7 +18,7 @@ router.get('/me', auth, async (req, res) => {
     }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
-      return res.status(400).json({ msg: 'אין פרופיל המקושר למשתמש זה.' });
+      return res.status(400).json({ msg: 'אין פרופיל המקושר למשתמש זה' });
     }
 
     res.json(profile);
@@ -36,8 +36,8 @@ router.post(
   [
     auth,
     [
-      check('status', 'סטטוס הינו שדה חובה.').not().isEmpty(),
-      check('skills', 'כישורים הינו שדה חובה.').not().isEmpty(),
+      check('status', 'סטטוס הינו שדה חובה').not().isEmpty(),
+      check('skills', 'כישורים הינו שדה חובה').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -130,13 +130,13 @@ router.get('/user/:user_id', async (req, res) => {
       user: req.params.user_id,
     }).populate('user', ['name', 'avatar']);
 
-    if (!profile) return res.status(400).json({ msg: 'הפרופיל לא נמצא.' });
+    if (!profile) return res.status(400).json({ msg: 'הפרופיל לא נמצא' });
 
     res.json(profile);
   } catch (err) {
     console.error('💥 ' + err.message);
     if (err.kind === 'ObjectId')
-      return res.status(400).json({ msg: 'הפרופיל לא נמצא.' });
+      return res.status(400).json({ msg: 'הפרופיל לא נמצא' });
     res.status(500).send('Server error');
   }
 });
@@ -152,7 +152,7 @@ router.delete('/', auth, async (req, res) => {
     // Remove the user
     await User.findOneAndRemove({ _id: req.user.id });
 
-    res.json({ msg: 'המשתמש הוסר.' });
+    res.json({ msg: 'המשתמש הוסר' });
   } catch (err) {
     console.error('💥 ' + err.message);
     res.status(500).send('Server error');
@@ -167,9 +167,9 @@ router.put(
   [
     auth,
     [
-      check('title', 'כותרת הינה שדה חובה.').not().isEmpty(),
-      check('company', 'חברה הינה שדה חובה.').not().isEmpty(),
-      check('from', 'תאריך התחלה הינו שדה חובה.').not().isEmpty(),
+      check('title', 'כותרת הינה שדה חובה').not().isEmpty(),
+      check('company', 'חברה הינה שדה חובה').not().isEmpty(),
+      check('from', 'תאריך התחלה הינו שדה חובה').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -243,10 +243,10 @@ router.put(
   [
     auth,
     [
-      check('school', 'מוסד לימודים הינו שדה חובה.').not().isEmpty(),
-      check('degree', 'תואר/תעודה הינה שדה חובה.').not().isEmpty(),
-      check('fieldofstudy', 'תחום לימודים הינו שדה חובה.').not().isEmpty(),
-      check('from', 'תאריך התחלה הינו שדה חובה.').not().isEmpty(),
+      check('school', 'מוסד לימודים הינו שדה חובה').not().isEmpty(),
+      check('degree', 'תואר/תעודה הינה שדה חובה').not().isEmpty(),
+      check('fieldofstudy', 'תחום לימודים הינו שדה חובה').not().isEmpty(),
+      check('from', 'תאריך התחלה הינו שדה חובה').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -331,7 +331,7 @@ router.get('/github/:username', async (req, res) => {
       if (error) console.error('💥 ' + error);
 
       if (response.statusCode !== 200)
-        return res.status(404).json({ msg: 'לא נמצא פרופיל גיטהאב.' });
+        return res.status(404).json({ msg: 'לא נמצא פרופיל גיטהאב' });
 
       res.json(JSON.parse(body));
     });

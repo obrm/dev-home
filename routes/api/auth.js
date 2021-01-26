@@ -27,8 +27,8 @@ router.get('/', auth, async (req, res) => {
 // @access      Public
 router.post(
   '/',
-  body('email', `נא להזין כתובת דואר אלקטרוני תקנית.`).isEmail(),
-  body('password', 'סיסמה הינה שדה חובה.').exists(),
+  body('email', `נא להזין כתובת דואר אלקטרוני תקנית`).isEmail(),
+  body('password', 'סיסמה הינה שדה חובה').exists(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -43,7 +43,7 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'הפרטים שהוזנו אינם תקינים.' }] });
+          .json({ errors: [{ msg: 'הפרטים שהוזנו אינם תקינים' }] });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -51,7 +51,7 @@ router.post(
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'הפרטים שהוזנו אינם תקינים.' }] });
+          .json({ errors: [{ msg: 'הפרטים שהוזנו אינם תקינים' }] });
       }
 
       const payload = {
@@ -63,7 +63,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 3600 },
+        { expiresIn: 86400000 },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
