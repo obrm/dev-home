@@ -85,8 +85,26 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
               required
             />
             <small className="form-text">
-              אתר זה משתמש ב-Gravatar לתמונות פרופיל, אז כדי לאפשר תמונת פרופיל,
-              יש להשתמש בדוא"ל של Gravatar
+              אתר זה משתמש ב-
+              <b>
+                <a
+                  href="https://he.gravatar.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Gravatar
+                </a>{' '}
+              </b>
+              לתמונות פרופיל, אז כדי לאפשר תמונת פרופיל, יש להשתמש בדוא"ל של{' '}
+              <b>
+                <a
+                  href="https://he.gravatar.com/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Gravatar
+                </a>
+              </b>
             </small>
           </div>
           <div className="form-group">
@@ -115,17 +133,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                   />
                 </label>
                 <span> נקבה &nbsp;&nbsp;&nbsp;</span>
-              </span>
-              <span>
-                <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value={'other'}
-                    onClick={() => setGender('other')}
-                  />
-                </label>
-                <span> אחר </span>
               </span>
             </p>
           </div>

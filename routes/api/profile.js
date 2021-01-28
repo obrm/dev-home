@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 // @route       GET api/profile/me
 // @desc        Get current user's profile
@@ -46,45 +47,33 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    // destructure the request
     const {
-      company,
-      website,
-      location,
-      bio,
-      status,
-      githubusername,
       skills,
       youtube,
-      facebook,
       twitter,
       instagram,
       linkedin,
+      facebook,
+      // spread the rest of the fields we don't need to check
+      ...rest
     } = req.body;
 
     // Build profile object
-    const profileFields = {};
-    profileFields.user = req.user.id;
-    if (company) profileFields.company = company;
-    if (website) profileFields.website = website;
-    if (location) profileFields.location = location;
-    if (bio) profileFields.bio = bio;
-    if (status) profileFields.status = status;
-    if (githubusername) profileFields.githubusername = githubusername;
-    if (skills) {
-      profileFields.skills = skills.split(',').map(skill => skill.trim());
-    }
+    const profileFields = {
+      user: req.user.id,
+      ...rest,
+      skills: skills.split(',').map(skill => skill.trim()),
+    };
 
-    // Build social object
-    profileFields.social = {};
-    if (youtube) profileFields.youtube = youtube;
-    if (twitter) profileFields.twitter = twitter;
-    if (facebook) profileFields.facebook = facebook;
-    if (linkedin) profileFields.linkedin = linkedin;
-    if (instagram) profileFields.instagram = instagram;
+    // Build socialFields object
+    const socialFields = { youtube, twitter, instagram, linkedin, facebook };
+
+    // Add socialFields to profileFields
+    profileFields.social = socialFields;
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });
-
       if (profile) {
         // Update profile
         profile = await Profile.findOneAndUpdate(
@@ -146,6 +135,9 @@ router.get('/user/:user_id', async (req, res) => {
 // @access      Private
 router.delete('/', auth, async (req, res) => {
   try {
+    // Remove user's posts
+    await Post.deleteMany({ user: req.user.id });
+
     // Remove profile
     await Profile.findOneAndRemove({ user: req.user.id });
 

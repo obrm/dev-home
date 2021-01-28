@@ -4,12 +4,16 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { getCurrentProfile } from '../../actions/profile';
+import DashboardActions from './DashboardActions';
+import Experience from './Experience';
+import Education from './Education';
+import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 
 const Dashboard = ({
   getCurrentProfile,
   auth: { user },
   profile: { profile, loading },
+  deleteAccount,
 }) => {
   useEffect(() => {
     getCurrentProfile();
@@ -24,7 +28,10 @@ const Dashboard = ({
         </title>
       </Helmet>
       {loading && profile === null ? (
-        <Spinner />
+        <>
+          <h1 className="large text-primary">לוח בקרה</h1>
+          <Spinner />
+        </>
       ) : (
         <>
           <h1 className="large text-primary">לוח בקרה</h1>
@@ -32,13 +39,18 @@ const Dashboard = ({
             <i className="fas fa-user"></i>{' '}
             {(user && user.gender === 'male' && `ברוך הבא ${user.name}`) ||
               (user && user.gender === 'female' && `ברוכה הבאה ${user.name}`) ||
-              (user &&
-                user.gender === 'other' &&
-                `${user.name}, ברוכים הבאים`) ||
               (user === null && 'ברוכים הבאים')}
           </p>
           {profile !== null ? (
-            <>has</>
+            <>
+              <DashboardActions />
+              {profile.experience.length > 0 && (
+                <Experience experience={profile.experience} />
+              )}
+              {profile.education.length > 0 && (
+                <Education education={profile.education} />
+              )}
+            </>
           ) : (
             <>
               <p>טרם יצרת פרופיל</p>
@@ -47,6 +59,11 @@ const Dashboard = ({
               </Link>
             </>
           )}
+          <div className="my-2">
+            <button className="btn btn-danger" onClick={() => deleteAccount()}>
+              <i className="fas fa-user-minus"></i> מחיקת חשבון
+            </button>
+          </div>
         </>
       )}
     </>
@@ -57,6 +74,7 @@ Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -64,4 +82,6 @@ const mapStateToProps = state => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
+  Dashboard
+);
