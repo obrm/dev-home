@@ -7,6 +7,7 @@ import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import Experience from './Experience';
 import Education from './Education';
+import Alert from '../layout/Alert';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 
 const Dashboard = ({
@@ -27,45 +28,53 @@ const Dashboard = ({
           {user ? `בית המפתחים | ${user.name}` : 'בית המפתחים | לוח בקרה'}
         </title>
       </Helmet>
-      {loading && profile === null ? (
-        <>
-          <h1 className="large text-primary">לוח בקרה</h1>
-          <Spinner />
-        </>
-      ) : (
-        <>
-          <h1 className="large text-primary">לוח בקרה</h1>
-          <p className="lead">
-            <i className="fas fa-user"></i>{' '}
-            {(user && user.gender === 'male' && `ברוך הבא ${user.name}`) ||
-              (user && user.gender === 'female' && `ברוכה הבאה ${user.name}`) ||
-              (user === null && 'ברוכים הבאים')}
-          </p>
-          {profile !== null ? (
-            <>
-              <DashboardActions />
-              {profile.experience.length > 0 && (
-                <Experience experience={profile.experience} />
-              )}
-              {profile.education.length > 0 && (
-                <Education education={profile.education} />
-              )}
-            </>
-          ) : (
-            <>
-              <p>טרם יצרת פרופיל</p>
-              <Link to="/create-profile" className="btn btn-primary my-1">
-                יצירת פרופיל
-              </Link>
-            </>
-          )}
-          <div className="my-2">
-            <button className="btn btn-danger" onClick={() => deleteAccount()}>
-              <i className="fas fa-user-minus"></i> מחיקת חשבון
-            </button>
-          </div>
-        </>
-      )}
+      <section className="container">
+        <Alert />
+        {loading && profile === null ? (
+          <>
+            <h1 className="large text-primary">לוח בקרה</h1>
+            <Spinner />
+          </>
+        ) : (
+          <>
+            <h1 className="large text-primary">לוח בקרה</h1>
+            <p className="lead">
+              <i className="fas fa-user"></i>{' '}
+              {(user && user.gender === 'male' && `ברוך הבא ${user.name}`) ||
+                (user &&
+                  user.gender === 'female' &&
+                  `ברוכה הבאה ${user.name}`) ||
+                (user === null && 'ברוכים הבאים')}
+            </p>
+            {profile !== null ? (
+              <>
+                <DashboardActions />
+                {profile.experience.length > 0 && (
+                  <Experience experience={profile.experience} />
+                )}
+                {profile.education.length > 0 && (
+                  <Education education={profile.education} />
+                )}
+              </>
+            ) : (
+              <>
+                <p>טרם יצרת פרופיל</p>
+                <Link to="/create-profile" className="btn btn-primary my-1">
+                  יצירת פרופיל
+                </Link>
+              </>
+            )}
+            <div className="my-2">
+              <button
+                className="btn btn-danger"
+                onClick={() => deleteAccount()}
+              >
+                <i className="fas fa-user-minus"></i> מחיקת חשבון
+              </button>
+            </div>
+          </>
+        )}
+      </section>
     </>
   );
 };

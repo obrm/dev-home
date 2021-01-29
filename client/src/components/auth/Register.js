@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
+import Alert from '../layout/Alert';
 import PropTypes from 'prop-types';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
@@ -57,111 +58,114 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   return (
     <>
       <Helmet>
-        <title>{'בית המפתחים - הרשמה'}</title>
+        <title>{'בית המפתחים | הרשמה'}</title>
       </Helmet>
-      <div className="form-container">
-        <h1 className="large text-primary">הרשמה</h1>
-        <p className="lead">
-          <i className="fas fa-user" /> יצירת חשבון
-        </p>
-        <form className="form" onSubmit={onSubmit}>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="שם (בעברית)"
-              name="name"
-              value={name}
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="דואר אלקטרוני"
-              value={email}
-              onChange={onChange}
-              name="email"
-              required
-            />
-            <small className="form-text">
-              אתר זה משתמש ב-
-              <b>
-                <a
-                  href="https://he.gravatar.com/"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Gravatar
-                </a>{' '}
-              </b>
-              לתמונות פרופיל, אז כדי לאפשר תמונת פרופיל, יש להשתמש בדוא"ל של{' '}
-              <b>
-                <a
-                  href="https://he.gravatar.com/"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Gravatar
-                </a>
-              </b>
-            </small>
-          </div>
-          <div className="form-group">
-            <span>
-              <h4>מגדר</h4>
-            </span>
-            <p>
+      <section className="container">
+        <Alert />
+        <div className="form-container">
+          <h1 className="large text-primary">הרשמה</h1>
+          <p className="lead">
+            <i className="fas fa-user" /> יצירת חשבון
+          </p>
+          <form className="form" onSubmit={onSubmit}>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="שם (בעברית)"
+                name="name"
+                value={name}
+                onChange={onChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="דואר אלקטרוני"
+                value={email}
+                onChange={onChange}
+                name="email"
+                required
+              />
+              <small className="form-text">
+                אתר זה משתמש ב-
+                <b>
+                  <a
+                    href="https://he.gravatar.com/"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Gravatar
+                  </a>{' '}
+                </b>
+                לתמונות פרופיל, אז כדי לאפשר תמונת פרופיל, יש להשתמש בדוא"ל של{' '}
+                <b>
+                  <a
+                    href="https://he.gravatar.com/"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Gravatar
+                  </a>
+                </b>
+              </small>
+            </div>
+            <div className="form-group">
               <span>
-                <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value={'male'}
-                    onClick={() => setGender('male')}
-                  />
-                </label>
-                <span> זכר &nbsp;&nbsp;&nbsp;</span>
+                <h4>מגדר</h4>
               </span>
-              <span>
-                <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value={'female'}
-                    onClick={() => setGender('female')}
-                  />
-                </label>
-                <span> נקבה &nbsp;&nbsp;&nbsp;</span>
-              </span>
-            </p>
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="סיסמה"
-              name="password"
-              value={password}
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="אישור סיסמה"
-              name="password2"
-              value={password2}
-              onChange={onChange}
-              required
-            />
-          </div>
-          <input type="submit" className="btn btn-primary" value="הרשמה" />
-        </form>
-        <p className="my-1">
-          רשומים לאתר? <Link to="/login">היכנסו</Link>
-        </p>
-      </div>
+              <p>
+                <span>
+                  <label>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value={'male'}
+                      onClick={() => setGender('male')}
+                    />
+                  </label>
+                  <span> זכר &nbsp;&nbsp;&nbsp;</span>
+                </span>
+                <span>
+                  <label>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value={'female'}
+                      onClick={() => setGender('female')}
+                    />
+                  </label>
+                  <span> נקבה &nbsp;&nbsp;&nbsp;</span>
+                </span>
+              </p>
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="סיסמה"
+                name="password"
+                value={password}
+                onChange={onChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="אישור סיסמה"
+                name="password2"
+                value={password2}
+                onChange={onChange}
+                required
+              />
+            </div>
+            <input type="submit" className="btn btn-primary" value="הרשמה" />
+          </form>
+          <p className="my-1">
+            רשומים לאתר? <Link to="/login">היכנסו</Link>
+          </p>
+        </div>
+      </section>
     </>
   );
 };
