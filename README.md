@@ -2,7 +2,7 @@
 
 > Social network for developers
 
-This is a MERN stack application of a social network that includes authentication, profiles and forum posts.
+This is a social network MERN stack application that includes authentication, profiles and forum posts.
 
 ## Quick Start
 
