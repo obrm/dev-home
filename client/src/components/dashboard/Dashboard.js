@@ -38,6 +38,11 @@ const Dashboard = ({
         ) : (
           <>
             <h1 className="large text-primary">לוח בקרה</h1>
+            <div style={{ width: '15%' }}>
+              {user !== null && (
+                <img className="round-img" src={user.avatar} alt={user.name} />
+              )}
+            </div>
             <p className="lead">
               <i className="fas fa-user"></i>{' '}
               {(user && user.gender === 'male' && `ברוך הבא ${user.name}`) ||

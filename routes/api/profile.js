@@ -1,6 +1,8 @@
 const express = require('express');
 const request = require('request');
 const config = require('config');
+// bring in normalize to give us a proper url, regardless of what user entered
+const normalize = require('normalize-url');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
@@ -55,6 +57,7 @@ router.post(
       instagram,
       linkedin,
       facebook,
+      website,
       // spread the rest of the fields we don't need to check
       ...rest
     } = req.body;
@@ -62,12 +65,22 @@ router.post(
     // Build profile object
     const profileFields = {
       user: req.user.id,
+      website:
+        website && website !== ''
+          ? normalize(website, { forceHttps: true })
+          : '',
       ...rest,
       skills: skills.split(',').map(skill => skill.trim()),
     };
 
     // Build socialFields object
     const socialFields = { youtube, twitter, instagram, linkedin, facebook };
+
+    // normalize social fields to ensure valid url
+    for (const [key, value] of Object.entries(socialFields)) {
+      if (value && value.length > 0)
+        socialFields[key] = normalize(value, { forceHttps: true });
+    }
 
     // Add socialFields to profileFields
     profileFields.social = socialFields;
@@ -236,7 +249,6 @@ router.put(
     auth,
     [
       check('school', 'מוסד לימודים הינו שדה חובה').not().isEmpty(),
-      check('degree', 'תואר/תעודה הינה שדה חובה').not().isEmpty(),
       check('fieldofstudy', 'תחום לימודים הינו שדה חובה').not().isEmpty(),
       check('from', 'תאריך התחלה הינו שדה חובה').not().isEmpty(),
     ],
@@ -289,7 +301,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id });
 
     // Get remove index
-    const removeIndex = profile.experience
+    const removeIndex = profile.education
       .map(item => item.id)
       .indexOf(req.params.edu_id);
 

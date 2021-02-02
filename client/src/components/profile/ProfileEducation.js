@@ -1,16 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { connect } from 'react-redux';
+import { delExEdu } from '../../actions/profile';
 
 const ProfileEducation = ({
-  education: { school, degree, fieldofstudy, from, to, description },
+  isUser,
+  delExEdu,
+  education: { _id, school, degree, fieldofstudy, from, to, description },
 }) => {
   return (
     <div>
-      <h3 style={{ fontWeight: '400' }}>
+      <h3 style={{ fontWeight: '400' }} className="in">
         <strong>מוסד לימודים / קורס: </strong>
         {school}
-      </h3>
+      </h3>{' '}
+      {isUser && (
+        <i
+          className="fas fa-trash-alt icon-danger"
+          onClick={() => {
+            delExEdu(_id, 'education', 'השכלה נמחקה בהצלחה');
+            alert('השכלה נמחקה בהצלחה');
+            window.location.reload();
+          }}
+        />
+      )}
       <p>
         <Moment format="DD/MM/YYYY">{from}</Moment> -{' '}
         {to === null ? ' נוכחי' : <Moment format="DD/MM/YYYY">{to}</Moment>}
@@ -37,6 +51,8 @@ const ProfileEducation = ({
 
 ProfileEducation.propTypes = {
   education: PropTypes.object.isRequired,
+  delExEdu: PropTypes.func.isRequired,
+  isUser: PropTypes.bool.isRequired,
 };
 
-export default ProfileEducation;
+export default connect(null, { delExEdu })(ProfileEducation);

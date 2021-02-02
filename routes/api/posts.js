@@ -12,7 +12,13 @@ const User = require('../../models/User');
 // @access      Private
 router.post(
   '/',
-  [auth, [check('text', 'טקסט הינו שדה חובה.').not().isEmpty()]],
+  [
+    auth,
+    [
+      check('text', 'טקסט הינו שדה חובה').not().isEmpty(),
+      check('title', 'כותרת הינה שדה חובה').not().isEmpty(),
+    ],
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -22,6 +28,7 @@ router.post(
       const user = await User.findById(req.user.id).select('-password');
 
       const newPost = new Post({
+        title: req.body.title,
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
@@ -41,7 +48,7 @@ router.post(
 // @route       GET api/posts
 // @desc        Get all posts
 // @access      Private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
     res.json(posts);
@@ -58,13 +65,13 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    if (!post) return res.status(404).json({ msg: 'הפוסט לא נמצא.' });
+    if (!post) return res.status(404).json({ msg: 'הפוסט לא נמצא' });
 
     res.json(post);
   } catch (err) {
     console.error('💥 ' + err.message);
     if (err.kind === 'ObjectId')
-      return res.status(404).json({ msg: 'הפוסט לא נמצא.' });
+      return res.status(404).json({ msg: 'הפוסט לא נמצא' });
     res.status(500).send('Server error');
   }
 });
@@ -78,7 +85,7 @@ router.put('/:id', auth, async (req, res) => {
 
     // Make sure if the user editing the comment is the owner of the comment
     if (post.user.toString() !== req.user.id)
-      return res.status(401).json({ msg: 'אין הרשאה.' });
+      return res.status(401).json({ msg: 'אין הרשאה' });
 
     const editedPost = {
       text: req.body.text,
@@ -109,11 +116,11 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    if (!post) return res.status(404).json({ msg: 'הפוסט לא נמצא.' });
+    if (!post) return res.status(404).json({ msg: 'הפוסט לא נמצא' });
 
     // Check user
     if (post.user.toString() !== req.user.id)
-      return res.status(401).json({ msg: 'אין הרשאה.' });
+      return res.status(401).json({ msg: 'אין הרשאה' });
 
     await post.remove();
 
@@ -137,7 +144,11 @@ router.put('/like/:id', auth, async (req, res) => {
     if (
       post.likes.filter(like => like.user.toString() === req.user.id).length > 0
     )
-      return res.status(400).json({ msg: 'הפוסט כבר קיבל ממך לייק.' });
+      return res.status(400).json({ msg: 'הפוסט כבר קיבל ממך לייק' });
+
+    // Check if the post owner is trying to like his own post
+    if (post.user.toString() === req.user.id)
+      return res.status(400).json({ msg: 'לא ניתן לתת לייק לעצמך' });
 
     post.likes.unshift({ user: req.user.id });
 
@@ -162,7 +173,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
       post.likes.filter(like => like.user.toString() === req.user.id).length ===
       0
     )
-      return res.status(400).json({ msg: 'הפוסט לא קיבל ממך לייק.' });
+      return res.status(400).json({ msg: 'הפוסט לא קיבל ממך לייק' });
 
     // Get remove index
     const removeIndex = post.likes
@@ -185,7 +196,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 // @access      Private
 router.post(
   '/comment/:id',
-  [auth, [check('text', 'טקסט הינו שדה חובה.').not().isEmpty()]],
+  [auth, [check('text', 'טקסט הינו שדה חובה').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())

@@ -273,7 +273,7 @@ const EditProfile = ({
                   </div>
                 </>
               )}
-              <input type="submit" className="btn btn-dark my-1" />
+              <input type="submit" className="btn btn-primary my-1" />
             </form>
 
             <button

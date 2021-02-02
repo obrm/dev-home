@@ -9,6 +9,7 @@ const Education = ({ education, delExEdu }) => {
     <tr key={edu._id}>
       <td>{edu.school}</td>
       <td className="hide-sm">{edu.degree}</td>
+      <td className="hide-sm">{edu.fieldofstudy}</td>
       <td className="hide-sm">
         <Moment format="DD/MM/YYYY">{edu.from}</Moment> -{' '}
         {edu.to === null ? (
@@ -36,6 +37,7 @@ const Education = ({ education, delExEdu }) => {
           <tr>
             <th>מוסד לימודים / קורס</th>
             <th className="hide-sm">תואר / תעודה</th>
+            <th className="hide-sm">תחום לימודים</th>
             <th className="hide-sm">תקופה</th>
             <th />
           </tr>

@@ -44,7 +44,15 @@ const Profile = ({
                 <h2 className="text-primary">ניסיון תעסוקתי</h2>
                 {profile.experience.length > 0 ? (
                   profile.experience.map(exp => (
-                    <ProfileExperience key={exp._id} experience={exp} />
+                    <ProfileExperience
+                      key={exp._id}
+                      experience={exp}
+                      isUser={
+                        auth.isAuthenticated &&
+                        auth.loading === false &&
+                        auth.user._id === profile.user._id
+                      }
+                    />
                   ))
                 ) : (
                   <h4 className="mr">לא צויין</h4>
@@ -54,7 +62,15 @@ const Profile = ({
                 <h2 className="text-primary">השכלה</h2>
                 {profile.education.length > 0 ? (
                   profile.education.map(edu => (
-                    <ProfileEducation key={edu._id} education={edu} />
+                    <ProfileEducation
+                      key={edu._id}
+                      education={edu}
+                      isUser={
+                        auth.isAuthenticated &&
+                        auth.loading === false &&
+                        auth.user._id === profile.user._id
+                      }
+                    />
                   ))
                 ) : (
                   <h4 className="mr">לא צויין</h4>

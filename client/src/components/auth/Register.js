@@ -148,7 +148,12 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 onChange={onChange}
                 required
               />
+              <small className="form-text tiny">
+                על הסיסמה להכיל 6 או יותר תווים, לפחות אות קטנה אחת, אות גדולה
+                אחת, מספר אחד ותו מיוחד אחד
+              </small>
             </div>
+
             <div className="form-group">
               <input
                 type="password"
