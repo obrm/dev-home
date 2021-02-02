@@ -58,27 +58,29 @@ const Post = ({
               </div>
             )}
             <div className="line"></div>
-            <div className="comments">
-              {post !== null && post.comments.length > 0 ? (
-                <>
-                  <h2 className="mx-2 text-primary">
-                    <strong>תגובות</strong>
-                  </h2>
-                  {post.comments.map(comment => (
-                    <CommentItem
-                      key={comment._id}
-                      comment={comment}
-                      postId={post._id}
-                    />
-                  ))}
-                </>
-              ) : (
-                <>
-                  <h3 className="mx-2">טרם נוספו תגובות לפוסט זה</h3>
-                  <div className="line"></div>
-                </>
-              )}
-            </div>
+            {post !== null && (
+              <div className="comments">
+                {post !== null && post.comments.length > 0 ? (
+                  <>
+                    <h2 className="mx-2 text-primary">
+                      <strong>תגובות</strong>
+                    </h2>
+                    {post.comments.map(comment => (
+                      <CommentItem
+                        key={comment._id}
+                        comment={comment}
+                        postId={post._id}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <h3 className="mx-2">טרם נוספו תגובות לפוסט זה</h3>
+                    <div className="line"></div>
+                  </>
+                )}
+              </div>
+            )}
             {isAuthenticated && post !== null && (
               <CommentForm postId={post._id} />
             )}

@@ -78,7 +78,7 @@ const PostItem = ({
                 className="btn btn-danger mr"
                 onClick={() => deletePost(post._id)}
               >
-                <i className="fas fa-times" />
+                מחק פוסט <i className="fas fa-times" />
               </button>
             )}
         </div>
@@ -92,7 +92,7 @@ PostItem.defaultProps = {
 };
 
 PostItem.propTypes = {
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,

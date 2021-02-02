@@ -7,6 +7,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  CLEAR_POST,
   ADD_COMMENT,
   DELETE_COMMENT,
 } from './types';
@@ -30,6 +31,10 @@ export const getPosts = () => async dispatch => {
 
 // Get post
 export const getPost = postId => async dispatch => {
+  dispatch({
+    type: CLEAR_POST,
+  });
+
   try {
     const res = await api.get(`/posts/${postId}`);
 
