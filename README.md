@@ -4,7 +4,7 @@
 
 This is a social network MERN stack application that includes authentication, profiles and forum posts.
 
-## Website of live project
+## Website of the live project
 https://obrm-dev-home.herokuapp.com/
 
 # Quick Start 🚀
